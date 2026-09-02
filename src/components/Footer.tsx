@@ -8,6 +8,7 @@ import {
   Twitter,
   Instagram,
   Linkedin,
+  MessageCircle,
 } from "lucide-react";
 
 /* ============================================
@@ -15,6 +16,10 @@ import {
    Shared across all pages with hotel info,
    quick links, and social media
    ============================================ */
+
+/* WhatsApp contact (international format) */
+const WHATSAPP_NUMBER = "254794554119";
+const WHATSAPP_DISPLAY = "+254 794 554 119";
 
 export default function Footer() {
   return (
@@ -131,6 +136,17 @@ export default function Footer() {
                   className="text-white/70 text-sm hover:text-accent transition-colors"
                 >
                   info@smallworldhotel.com
+                </a>
+              </li>
+              <li className="flex items-center gap-3">
+                <MessageCircle className="w-5 h-5 text-accent shrink-0" />
+                <a
+                  href={`https://wa.me/${WHATSAPP_NUMBER}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white/70 text-sm hover:text-accent transition-colors"
+                >
+                  {WHATSAPP_DISPLAY}
                 </a>
               </li>
             </ul>

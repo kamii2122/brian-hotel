@@ -7,8 +7,13 @@ import {
   MessageSquare,
   CalendarDays,
   Headphones,
+  MessageCircle,
 } from "lucide-react";
 import ContactForm from "@/components/ContactForm";
+
+/* WhatsApp contact number (international format for wa.me links) */
+const WHATSAPP_NUMBER = "254794554119";
+const WHATSAPP_DISPLAY = "+254 794 554 119";
 
 /* ============================================
    Contact Us Page
@@ -52,6 +57,13 @@ const contactInfo = [
     action: null,
     color: "#10B981",
   },
+  {
+    icon: MessageCircle,
+    title: "WhatsApp",
+    details: [WHATSAPP_DISPLAY, "Chat with us directly"],
+    action: `https://wa.me/${WHATSAPP_NUMBER}`,
+    color: "#25D366",
+  },
 ];
 
 /* Quick contact options */
@@ -73,6 +85,13 @@ const quickOptions = [
     title: "Guest Support",
     description: "24/7 assistance for current guests.",
     phone: "+1 (555) 123-4567",
+  },
+  {
+    icon: MessageCircle,
+    title: "WhatsApp",
+    description: "Chat with us instantly on WhatsApp.",
+    phone: WHATSAPP_DISPLAY,
+    href: `https://wa.me/${WHATSAPP_NUMBER}`,
   },
 ];
 
@@ -98,7 +117,7 @@ export default function ContactPage() {
       {/* Contact Info Cards */}
       <section className="py-16 px-4">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
             {contactInfo.map((info) => {
               const Icon = info.icon;
               const Wrapper = info.action ? "a" : "div";
@@ -135,7 +154,7 @@ export default function ContactPage() {
           <h2 className="font-heading text-2xl font-bold text-text text-center mb-8">
             Quick Contact Options
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {quickOptions.map((option) => {
               const Icon = option.icon;
               return (
@@ -151,7 +170,7 @@ export default function ContactPage() {
                     {option.description}
                   </p>
                   <a
-                    href={`tel:${option.phone.replace(/\s/g, "")}`}
+                    href={option.href || `tel:${option.phone.replace(/\s/g, "")}`}
                     className="text-primary font-semibold text-sm hover:underline"
                   >
                     {option.phone}
