@@ -25,6 +25,9 @@ interface FormErrors {
   message?: string;
 }
 
+/* Formspree endpoint for receiving form submissions */
+const FORMSPREE_ENDPOINT = "https://formspree.io/f/xeaqgrgn";
+
 export default function ContactForm() {
   const [formData, setFormData] = useState<FormData>({
     name: "",
@@ -36,6 +39,7 @@ export default function ContactForm() {
   const [errors, setErrors] = useState<FormErrors>({});
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState(false);
 
   /* Validate a single field */
   const validateField = (name: string, value: string): string | undefined => {
@@ -87,10 +91,29 @@ export default function ContactForm() {
     if (!validate()) return;
 
     setSubmitting(true);
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    setSubmitting(false);
-    setSubmitted(true);
+    setSubmitError(false);
+
+    try {
+      /* Send form data to Formspree */
+      const response = await fetch(FORMSPREE_ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Form submission failed");
+      }
+
+      setSubmitted(true);
+    } catch (err) {
+      setSubmitError(true);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   if (submitted) {
@@ -233,6 +256,17 @@ export default function ContactForm() {
           </p>
         )}
       </div>
+
+      {/* Submit Error */}
+      {submitError && (
+        <div className="bg-red-50 border border-red-200 text-red-700 rounded-lg p-4 text-sm flex items-start gap-2">
+          <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
+          <p>
+            Something went wrong sending your message. Please try again or contact us
+            directly via phone.
+          </p>
+        </div>
+      )}
 
       {/* Submit Button */}
       <button
